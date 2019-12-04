@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: symfony
+spec:
+  selector:
+    matchLabels:
+      app: symfony
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: symfony
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.17
+          ports:
+            - containerPort: 8000
+            - containerPort: 443
+          volumeMounts:
+            - mountPath: /app
+              name: workdir
+        - name: symfony
+          image: app:latest
+          imagePullPolicy: Never
+          volumeMounts:
+            - mountPath: /app
+              name: workdir
+      volumes:
+        - name: workdir
+          persistentVolumeClaim:
+            claimName: pvc-webroot

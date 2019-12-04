@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: symfony
+spec:
+  rules:
+    - host: symfony
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: symfony
+              servicePort: 8000
